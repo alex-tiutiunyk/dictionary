@@ -5,6 +5,16 @@ const Header = () => {
     <header className='fixed w-full bg-amber-200'>
       <div className='max-w-[920px] mx-auto pl-5 pr-5 pt-2 pb-2'>
         <ul className='flex justify-center gap-x-3 text-lg'>
+          <li>
+            <NavLink to='/signin' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
+              SignIn
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='/signup' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
+              SignUp
+            </NavLink>
+          </li>
           <NavLink to='/' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
             Home
           </NavLink>

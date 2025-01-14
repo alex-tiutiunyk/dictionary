@@ -1,17 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
-interface IFirebaseConfig {
-  apiKey: string;
-  authDomain: string;
-  databaseURL: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
-}
-
-const firebaseConfig: IFirebaseConfig = {
+const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: import.meta.env.VITE_APP_FIREBASE_DATABASE_URL,
@@ -22,4 +13,5 @@ const firebaseConfig: IFirebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const db = getDatabase(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
