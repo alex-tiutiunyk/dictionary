@@ -605,6 +605,10 @@ video {
   padding-top: 0.5rem;
 }
 
+.pt-\[44px\] {
+  padding-top: 44px;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
