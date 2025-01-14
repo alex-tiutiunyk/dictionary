@@ -1,16 +1,10 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import Header from './Header';
 
 const Layout = () => {
   return (
     <div>
-      <header>
-        <NavLink to='/' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
-          Index
-        </NavLink>
-        <NavLink to='/words' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
-          Words
-        </NavLink>
-      </header>
+      <Header />
       <Outlet />
     </div>
   );
