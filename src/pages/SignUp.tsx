@@ -1,6 +1,7 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 import { auth } from '../firebase';
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   // const [userName, setUserName] = React.useState<string>('');
@@ -18,9 +19,9 @@ const SignUp = () => {
 
   const handleRegister = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       // await updateProfile(userCredential.user, { userName: userName });
-      console.log('User registered successfully', userCredential);
+      console.log('User registered successfully');
     } catch (error) {
       console.error('Error registering user:', error);
     }
@@ -77,6 +78,12 @@ const SignUp = () => {
             >
               Sign up
             </button>
+            <p className='text-sm font-light text-gray-500'>
+              Already have an account?{' '}
+              <Link to='/signin' className='font-medium text-primary-600 hover:underline'>
+                Sign in here
+              </Link>
+            </p>
           </form>
         </div>
       </div>

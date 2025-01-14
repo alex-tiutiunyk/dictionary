@@ -1,4 +1,29 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { auth } from '../firebase';
+
 const SignIn = () => {
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const name: string = e.target.id;
+    const value = e.target.value;
+
+    if (name === 'email') return setEmail(value);
+    if (name === 'password') return setPassword(value);
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User Sign In');
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  };
+
   return (
     <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
       <div className='w-full bg-gray-50 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0'>
@@ -13,10 +38,10 @@ const SignIn = () => {
               </label>
               <input
                 type='email'
-                name='email'
                 id='email'
+                value={email}
+                onChange={handleChange}
                 className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5'
-                placeholder='name@company.com'
               />
             </div>
             <div>
@@ -25,18 +50,25 @@ const SignIn = () => {
               </label>
               <input
                 type='password'
-                name='password'
                 id='password'
-                placeholder='••••••••'
+                value={password}
+                onChange={handleChange}
                 className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5'
               />
             </div>
             <button
               type='submit'
+              onClick={handleLogin}
               className='w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
             >
               Sign in
             </button>
+            <p className='text-sm font-light text-gray-500'>
+              Don’t have an account yet?{' '}
+              <Link to='/signup' className='font-medium text-primary-600 hover:underline'>
+                Sign up
+              </Link>
+            </p>
           </form>
         </div>
       </div>
