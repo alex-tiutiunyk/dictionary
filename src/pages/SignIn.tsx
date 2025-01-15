@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const SignIn = () => {
           <h1 className='text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
             Sign in to your account
           </h1>
-          <form className='space-y-4 md:space-y-6' action='#'>
+          <div className='space-y-4 md:space-y-6'>
             <div>
               <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900'>
                 Your email
@@ -72,7 +72,7 @@ const SignIn = () => {
                 Sign up
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>
