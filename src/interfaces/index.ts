@@ -1,4 +1,4 @@
-export interface IData {
+export interface IWord {
   id: string;
   date: string;
   word: string;
