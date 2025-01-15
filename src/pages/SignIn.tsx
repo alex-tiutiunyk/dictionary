@@ -1,11 +1,12 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 
 const SignIn = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.id;
@@ -15,9 +16,11 @@ const SignIn = () => {
     if (name === 'password') return setPassword(value);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
+    console.log('Logg In Pressed');
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      navigate('/');
       console.log('User Sign In');
     } catch (error) {
       console.error('Error registering user:', error);
