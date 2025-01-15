@@ -4,7 +4,7 @@ import { FirebaseError } from 'firebase/app';
 import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const [displayName, setDisplayName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
@@ -63,7 +63,7 @@ const SignUp = () => {
           <h1 className='text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
             Create your account
           </h1>
-          <form className='space-y-4 md:space-y-6' action='#'>
+          <div className='space-y-4 md:space-y-6'>
             <p className='text-red-700 text-center'>{errorMessage}</p>
             <div>
               <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900'>
@@ -114,7 +114,7 @@ const SignUp = () => {
                 Sign in here
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>

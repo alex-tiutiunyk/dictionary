@@ -1,8 +1,25 @@
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
+  const [authUser, setAuthUser] = React.useState<User | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
   const auth = getAuth();
+
+  React.useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+      if (user) setAuthUser(user);
+      else setAuthUser(null);
+      console.log(user);
+    });
+    return () => {
+      listen();
+    };
+  }, []);
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -40,7 +57,8 @@ const Header = () => {
           className='absolute top-2 right-2 hover:underline'
           onClick={handleSignOut}
         >
-          Sign Out
+          {loading ? 'loading' : `${authUser?.email} | Sign Out`}
+          {/* {authUser ? `${authUser?.email} | Sign Out` : <button>Sign In</button>} */}
         </button>
       </div>
     </header>
