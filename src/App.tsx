@@ -6,6 +6,7 @@ import WordsListPage from './pages/WordsList';
 import SingleWordPage from './pages/SingleWord';
 import NotFoundPage from './pages/NotFound';
 import SignUp from './pages/SignUp';
+import UserDetails from './pages/UserDetails';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='signup' element={<SignUp />} />
           <Route path='words' element={<WordsListPage />} />
           <Route path='words/:id' element={<SingleWordPage />} />
+          <Route path='user' element={<UserDetails />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>

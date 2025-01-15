@@ -51,6 +51,11 @@ const Header = () => {
               Words
             </NavLink>
           </li>
+          <li>
+            <NavLink to='/user' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
+              User
+            </NavLink>
+          </li>
         </ul>
         <button
           type='button'
