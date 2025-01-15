@@ -1,29 +1,58 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
 
 const SignUp = () => {
-  // const [userName, setUserName] = React.useState<string>('');
+  const [displayName, setDisplayName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.id;
     const value = e.target.value;
 
-    // if (name === 'name') return setUserName(value);
+    if (name === 'name') return setDisplayName(value);
     if (name === 'email') return setEmail(value);
     if (name === 'password') return setPassword(value);
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (): Promise<void> => {
+    if (!displayName || !email || !password) return setErrorMessage('Fill all inputs');
+    if (password.length < 6) return setErrorMessage('To short password');
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      // await updateProfile(userCredential.user, { userName: userName });
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await updateProfile(user, { displayName });
       console.log('User registered successfully');
+      setDisplayName('');
+      setEmail('');
+      setPassword('');
     } catch (error) {
-      console.error('Error registering user:', error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            setErrorMessage(`Email address ${email} already in use.`);
+            break;
+          case 'auth/invalid-email':
+            setErrorMessage(`Email address ${email} is invalid.`);
+            break;
+          case 'auth/operation-not-allowed':
+            setErrorMessage(`Error during sign up.`);
+            break;
+          case 'auth/weak-password':
+            setErrorMessage(
+              `Password is not strong enough. Add additional characters including special characters and numbers.`,
+            );
+            break;
+          default:
+            console.log(error.message);
+            break;
+        }
+      }
     }
   };
 
@@ -35,18 +64,19 @@ const SignUp = () => {
             Create your account
           </h1>
           <form className='space-y-4 md:space-y-6' action='#'>
-            {/* <div>
+            <p className='text-red-700 text-center'>{errorMessage}</p>
+            <div>
               <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900'>
                 Display Name
               </label>
               <input
                 type='text'
                 id='name'
-                value={userName}
+                value={displayName}
                 onChange={handleChange}
                 className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5'
               />
-            </div> */}
+            </div>
             <div>
               <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900'>
                 Your email
