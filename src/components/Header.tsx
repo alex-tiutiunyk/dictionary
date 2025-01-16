@@ -42,7 +42,7 @@ const Header = () => {
           onClick={handleSignOut}
         >
           {loading && 'loading'}
-          {!loading && user && `${user?.email} | Sign Out`}
+          {!loading && user && `${user?.displayName ? user?.displayName : user?.email} | Sign Out`}
         </button>
       </div>
     </header>

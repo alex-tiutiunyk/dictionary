@@ -48,6 +48,7 @@ const SignIn: React.FC = () => {
             Sign in to your account
           </h1>
           <div className='space-y-4 md:space-y-6'>
+            <p className='text-center'>Test account: test@gmail.com / test123</p>
             {errorMessage && <p className='text-red-700 text-center'>{errorMessage}</p>}
             <div>
               <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900'>
