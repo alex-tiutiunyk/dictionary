@@ -1,28 +1,17 @@
-import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { NavLink, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import { auth } from '../firebase';
 
 const Header = () => {
-  const [authUser, setAuthUser] = React.useState<User | null>(null);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const { user, loading } = useAuth();
 
-  const auth = getAuth();
-
-  React.useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      setLoading(false);
-      if (user) setAuthUser(user);
-      else setAuthUser(null);
-      console.log(user);
-    });
-    return () => {
-      listen();
-    };
-  }, []);
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      navigate('/signin');
       console.log('Sign Out');
     } catch (error) {
       console.log(error);
@@ -33,16 +22,6 @@ const Header = () => {
     <header className='fixed w-full bg-amber-200'>
       <div className='max-w-[920px] mx-auto pl-5 pr-5 pt-2 pb-2'>
         <ul className='flex justify-center gap-x-3 text-lg'>
-          <li>
-            <NavLink to='/signin' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
-              SignIn
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to='/signup' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
-              SignUp
-            </NavLink>
-          </li>
           <NavLink to='/' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
             Home
           </NavLink>
@@ -62,8 +41,8 @@ const Header = () => {
           className='absolute top-2 right-2 hover:underline'
           onClick={handleSignOut}
         >
-          {loading ? 'loading' : `${authUser?.email} | Sign Out`}
-          {/* {authUser ? `${authUser?.email} | Sign Out` : <button>Sign In</button>} */}
+          {loading && 'loading'}
+          {!loading && user && `${user?.email} | Sign Out`}
         </button>
       </div>
     </header>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
-import { auth } from '../firebase';
-import { Link } from 'react-router-dom';
+import { auth } from '../../firebase';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
   const [displayName, setDisplayName] = React.useState<string>('');
@@ -10,9 +10,11 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = React.useState<string>('');
   const [errorMessage, setErrorMessage] = React.useState<string>('');
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.id;
-    const value = e.target.value;
+    const value: string = e.target.value;
 
     if (name === 'name') return setDisplayName(value);
     if (name === 'email') return setEmail(value);
@@ -20,14 +22,16 @@ const SignUp: React.FC = () => {
   };
 
   const handleRegister = async (): Promise<void> => {
-    if (!displayName || !email || !password) return setErrorMessage('Fill all inputs');
+    if (!email || !password) return setErrorMessage('Fill all inputs');
     if (password.length < 6) return setErrorMessage('To short password');
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       await updateProfile(user, { displayName });
+
       console.log('User registered successfully');
+      navigate('/');
       setDisplayName('');
       setEmail('');
       setPassword('');
@@ -64,7 +68,7 @@ const SignUp: React.FC = () => {
             Create your account
           </h1>
           <div className='space-y-4 md:space-y-6'>
-            <p className='text-red-700 text-center'>{errorMessage}</p>
+            {errorMessage && <p className='text-red-700 text-center'>{errorMessage}</p>}
             <div>
               <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900'>
                 Display Name

@@ -1,11 +1,13 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
+import { FirebaseError } from 'firebase/app';
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -20,10 +22,21 @@ const SignIn: React.FC = () => {
     console.log('Logg In Pressed');
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
       navigate('/');
       console.log('User Sign In');
+      setErrorMessage('');
     } catch (error) {
-      console.error('Error registering user:', error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/invalid-credential':
+            setErrorMessage(`Wrong login/email or user does not exist.`);
+            break;
+          default:
+            console.log(error.message);
+            break;
+        }
+      }
     }
   };
 
@@ -35,6 +48,7 @@ const SignIn: React.FC = () => {
             Sign in to your account
           </h1>
           <div className='space-y-4 md:space-y-6'>
+            {errorMessage && <p className='text-red-700 text-center'>{errorMessage}</p>}
             <div>
               <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900'>
                 Your email
