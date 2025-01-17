@@ -10,12 +10,20 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
   const [example, setExample] = React.useState<string>('');
   const [exampleTranslation, setExampleTranslation] = React.useState<string>('');
 
-  const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 1 example for event type
+  const changeInput: React.ComponentProps<'input'>['onChange'] = (e) => {
     const value: string = e.target.value;
     const name: string = e.target.id;
 
     if (name === 'word') return setWord(value);
     if (name === 'translation') return setWordTranslation(value);
+  };
+
+  // 2 example for event type
+  const changeArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value: string = e.target.value;
+    const name: string = e.target.id;
+
     if (name === 'example') return setExample(value);
     if (name === 'example-translation') return setExampleTranslation(value);
   };
@@ -31,7 +39,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           type='text'
           id='word'
           value={word}
-          onChange={handleForm}
+          onChange={changeInput}
           className='border border-slate-600 p-1 rounded-md'
         />
       </div>
@@ -43,7 +51,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           type='text'
           id='translation'
           value={wordTranslation}
-          onChange={handleForm}
+          onChange={changeInput}
           className='border border-slate-600 p-1 rounded-md'
         />
       </div>
@@ -56,7 +64,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           cols={30}
           rows={2}
           value={example}
-          onChange={handleForm}
+          onChange={changeArea}
           className='border border-slate-600 p-1 rounded-md'
         ></textarea>
       </div>
@@ -69,7 +77,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           cols={30}
           rows={2}
           value={exampleTranslation}
-          onChange={handleForm}
+          onChange={changeArea}
           className='border border-slate-600 p-1 rounded-md'
         ></textarea>
       </div>
