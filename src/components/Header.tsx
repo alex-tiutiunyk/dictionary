@@ -64,8 +64,8 @@ const Header: React.FC = () => {
         </button>
       </div>
       {isModal && (
-        <Modal setIsModal={setIsModal}>
-          <AddWord />
+        <Modal closeModal={handlePopup}>
+          <AddWord closeModal={handlePopup} />
         </Modal>
       )}
     </header>
