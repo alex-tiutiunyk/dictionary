@@ -5,7 +5,7 @@ import { auth } from '../firebase';
 import { SquareMinus, SquarePlus } from 'lucide-react';
 import React from 'react';
 import { Modal } from '../ui-kit/Modal';
-import AddWord from './AddWord';
+import NewWord from './NewWord';
 
 const Header: React.FC = () => {
   const { user, loading } = useAuth();
@@ -65,7 +65,7 @@ const Header: React.FC = () => {
       </div>
       {isModal && (
         <Modal closeModal={handlePopup}>
-          <AddWord closeModal={handlePopup} />
+          <NewWord closeModal={handlePopup} />
         </Modal>
       )}
     </header>

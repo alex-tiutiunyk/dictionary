@@ -1,14 +1,21 @@
 import React from 'react';
+import { db } from '../firebase';
+import { addDoc, collection, doc } from 'firebase/firestore';
+import useAuth from '../hooks/useAuth';
+import { IWord } from '../types';
 
-interface ModalProps {
+interface NewWordProps {
   closeModal: () => void;
 }
 
-const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
+const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
   const [word, setWord] = React.useState<string>('');
   const [wordTranslation, setWordTranslation] = React.useState<string>('');
   const [example, setExample] = React.useState<string>('');
   const [exampleTranslation, setExampleTranslation] = React.useState<string>('');
+  const [error, setError] = React.useState<string>('');
+
+  const { user } = useAuth();
 
   const handleForm = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
@@ -28,9 +35,36 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
     if (nameTextarea === 'example-translation') return setExampleTranslation(valueTextrea);
   };
 
+  const addWord = async (): Promise<void> => {
+    if (!word) return setError('Please fill Word field');
+
+    try {
+      const userId = user?.email as string;
+
+      const docRef = doc(db, 'users', userId);
+      await addDoc(collection(docRef, 'words'), {
+        date: new Date().toISOString(),
+        word,
+        wordTranslation,
+        example,
+        exampleTranslation,
+      });
+      console.log('ok');
+
+      setWord('');
+      setWordTranslation('');
+      setExample('');
+      setExampleTranslation('');
+      closeModal();
+    } catch (error) {
+      console.log('Error adding new word: ', error);
+    }
+  };
+
   return (
     <>
       <h3 className='text-xl text-center'>Add new Word</h3>
+      <p className='text-red-700 text-center'>{error}</p>
       <div className='gap-1 flex flex-col'>
         <label htmlFor='word' className='text-sm'>
           Word
@@ -85,7 +119,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
         <button
           type='button'
           className='flex-grow focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2'
-          // onClick={addWord}
+          onClick={addWord}
         >
           Add Word
         </button>
@@ -101,4 +135,4 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
   );
 };
 
-export default AddWord;
+export default NewWord;
