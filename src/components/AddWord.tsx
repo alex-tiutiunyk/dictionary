@@ -10,22 +10,22 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
   const [example, setExample] = React.useState<string>('');
   const [exampleTranslation, setExampleTranslation] = React.useState<string>('');
 
-  // 1 example for event type
-  const changeInput: React.ComponentProps<'input'>['onChange'] = (e) => {
-    const value: string = e.target.value;
-    const name: string = e.target.id;
+  const handleForm = (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const textareaEvent = e as React.ChangeEvent<HTMLTextAreaElement>;
+
+    const value = e.target.value;
+    const name = e.target.id;
+
+    const valueTextrea: string = textareaEvent.target.value;
+    const nameTextarea: string = textareaEvent.target.id;
 
     if (name === 'word') return setWord(value);
     if (name === 'translation') return setWordTranslation(value);
-  };
 
-  // 2 example for event type
-  const changeArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value: string = e.target.value;
-    const name: string = e.target.id;
-
-    if (name === 'example') return setExample(value);
-    if (name === 'example-translation') return setExampleTranslation(value);
+    if (nameTextarea === 'example') return setExample(valueTextrea);
+    if (nameTextarea === 'example-translation') return setExampleTranslation(valueTextrea);
   };
 
   return (
@@ -39,7 +39,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           type='text'
           id='word'
           value={word}
-          onChange={changeInput}
+          onChange={handleForm}
           className='border border-slate-600 p-1 rounded-md'
         />
       </div>
@@ -51,7 +51,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           type='text'
           id='translation'
           value={wordTranslation}
-          onChange={changeInput}
+          onChange={handleForm}
           className='border border-slate-600 p-1 rounded-md'
         />
       </div>
@@ -64,7 +64,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           cols={30}
           rows={2}
           value={example}
-          onChange={changeArea}
+          onChange={handleForm}
           className='border border-slate-600 p-1 rounded-md'
         ></textarea>
       </div>
@@ -77,7 +77,7 @@ const AddWord: React.FC<ModalProps> = ({ closeModal }) => {
           cols={30}
           rows={2}
           value={exampleTranslation}
-          onChange={changeArea}
+          onChange={handleForm}
           className='border border-slate-600 p-1 rounded-md'
         ></textarea>
       </div>
