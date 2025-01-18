@@ -1,16 +1,17 @@
 import { signOut } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
 import { auth } from '../firebase';
 import { SquareMinus, SquarePlus } from 'lucide-react';
 import React from 'react';
 import { Modal } from '../ui-kit/Modal';
 import NewWord from './NewWord';
+import { useAppSelector } from '../redux/hooks';
 
 const Header: React.FC = () => {
-  const { user, loading } = useAuth();
   const [isModal, setIsModal] = React.useState<boolean>(false);
 
+  // get user info from redux
+  const user = useAppSelector((state) => state.user.value);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -59,8 +60,7 @@ const Header: React.FC = () => {
           className='absolute top-2 right-2 hover:underline'
           onClick={handleSignOut}
         >
-          {loading && 'loading'}
-          {!loading && user && `${user?.displayName ? user?.displayName : user?.email} | Sign Out`}
+          {`${user?.displayName ? user?.displayName : user?.email} | Sign Out`}
         </button>
       </div>
       {isModal && (

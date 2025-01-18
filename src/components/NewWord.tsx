@@ -1,7 +1,7 @@
 import React from 'react';
 import { db } from '../firebase';
 import { addDoc, collection, doc } from 'firebase/firestore';
-import useAuth from '../hooks/useAuth';
+import { useAppSelector } from '../redux/hooks';
 
 interface NewWordProps {
   closeModal: () => void;
@@ -14,7 +14,8 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
   const [exampleTranslation, setExampleTranslation] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
 
-  const { user } = useAuth();
+  // get user info from redux
+  const user = useAppSelector((state) => state.user.value);
 
   // set value for input and textarea
   const handleForm = (

@@ -9,9 +9,16 @@ import SignUp from './pages/auth/SignUp';
 import UserDetails from './pages/UserDetails';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import useAuth from './hooks/useAuth';
+import { setUser } from './redux/userSlice';
+import { useAppDispatch } from './redux/hooks';
 
 function App() {
+  // get user info
   const { user, loading } = useAuth();
+
+  // set User info to redux
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
 
   if (loading)
     return <div className='flex items-center justify-center h-screen text-4xl'>Loading...</div>;

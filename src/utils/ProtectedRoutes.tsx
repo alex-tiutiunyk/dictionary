@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { useAppSelector } from '../redux/hooks';
 
 const ProtectedRoutes = () => {
-  const { user } = useAuth();
+  const user = useAppSelector((state) => state.user.value);
   return user ? <Outlet /> : <Navigate to='signin' />;
 };
 
