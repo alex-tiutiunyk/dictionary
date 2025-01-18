@@ -2,7 +2,6 @@ import React from 'react';
 import { db } from '../firebase';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import useAuth from '../hooks/useAuth';
-import { IWord } from '../types';
 
 interface NewWordProps {
   closeModal: () => void;
@@ -17,6 +16,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
 
   const { user } = useAuth();
 
+  // set value for input and textarea
   const handleForm = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
@@ -35,6 +35,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
     if (nameTextarea === 'example-translation') return setExampleTranslation(valueTextrea);
   };
 
+  // Add new word
   const addWord = async (): Promise<void> => {
     if (!word) return setError('Please fill Word field');
 

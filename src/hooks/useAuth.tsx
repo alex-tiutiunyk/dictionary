@@ -12,7 +12,7 @@ const useAuth = () => {
       if (user) setUser(user);
       else setUser(null);
       setLoading(false);
-      console.log(user);
+      console.log('Done useAuth');
     });
     return () => {
       listen();
