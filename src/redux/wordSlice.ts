@@ -1,30 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { IWord } from '../types';
 
 interface WordsState {
-  value: number;
+  value: IWord[] | undefined;
 }
 
-const initialState = { value: 0 } satisfies WordsState as WordsState;
+const initialState = { value: [] } satisfies WordsState as WordsState;
 
 const wordSlice = createSlice({
   name: 'words',
   initialState,
   reducers: {
-    getAllWords(state) {
-      state.value++;
-    },
-    getSingleWord(state, action: PayloadAction<number>) {
-      state.value += action.payload;
-    },
-    createWord(state) {
-      state.value--;
-    },
-    deleteWord(state, action: PayloadAction<number>) {
-      state.value += action.payload;
+    getAllWords(state, action: PayloadAction<IWord[] | undefined>) {
+      state.value = action.payload;
     },
   },
 });
 
-export const { getAllWords, getSingleWord, createWord, deleteWord } = wordSlice.actions;
+export const { getAllWords } = wordSlice.actions;
 export default wordSlice.reducer;

@@ -1,7 +1,9 @@
 import React from 'react';
 import { db } from '../firebase';
 import { addDoc, collection, doc } from 'firebase/firestore';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { getWordsFunc } from '../services/wordsService';
+import { getAllWords } from '../redux/wordSlice';
 
 interface NewWordProps {
   closeModal: () => void;
@@ -16,6 +18,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
 
   // get user info from redux
   const user = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
 
   // set value for input and textarea
   const handleForm = (
@@ -57,6 +60,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
       setWordTranslation('');
       setExample('');
       setExampleTranslation('');
+      getWordsFunc(user).then((data) => dispatch(getAllWords(data)));
       closeModal();
     } catch (error) {
       console.log('Error adding new word: ', error);
