@@ -60,7 +60,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
       setWordTranslation('');
       setExample('');
       setExampleTranslation('');
-      getWordsFunc(user).then((data) => dispatch(getAllWords(data)));
+      getWordsFunc(user, 'users', 'words').then((data) => dispatch(getAllWords(data)));
       closeModal();
     } catch (error) {
       console.log('Error adding new word: ', error);

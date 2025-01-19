@@ -1,10 +1,9 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { User } from 'firebase/auth';
-import { getWordsFunc } from '../services/wordsService';
+import { deleteWordFunc, getWordsFunc } from '../services/wordsService';
 import { getAllWords } from '../redux/wordSlice';
-import { collection, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { IWord } from '../types';
 
 const WordsListPage: React.FC = () => {
   // const [words, setWords] = React.useState<IWord[] | undefined>([]);
@@ -15,17 +14,14 @@ const WordsListPage: React.FC = () => {
   const words = useAppSelector((state) => state.words.value);
 
   React.useEffect(() => {
-    getWordsFunc(user).then((data) => dispatch(getAllWords(data)));
+    getWordsFunc(user, 'users', 'words').then((data) => dispatch(getAllWords(data)));
   }, []);
 
   const deleteWord = async (wordId: string, userId: string): Promise<void> => {
-    try {
-      const collectionPath = doc(doc(db, 'users', userId), 'words', wordId);
-      await deleteDoc(collectionPath);
-      getWordsFunc(user).then((data) => dispatch(getAllWords(data)));
-    } catch (error) {
-      console.log('Error delete word: ', error);
-    }
+    // delete word
+    (await deleteWordFunc(wordId, userId, 'users', 'words')) as IWord[] | undefined;
+    // get changed list of all words and dispatch new data
+    getWordsFunc(user, 'users', 'words').then((data) => dispatch(getAllWords(data)));
   };
 
   return (
