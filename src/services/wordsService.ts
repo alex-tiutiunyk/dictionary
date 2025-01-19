@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { IWord } from '../types';
 
@@ -12,7 +12,8 @@ export const getWordsFunc = async (
     if (!user) return;
     const userId = user?.email as string;
     const usersRef = collection(doc(db, collectionName, userId), subCollectionName);
-    const querySnapshot = await getDocs(usersRef);
+    const q = query(usersRef, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((item) => ({ id: item.id, ...item.data() } as IWord));
   } catch (error) {
     console.log('Error getting user works: ', error);
