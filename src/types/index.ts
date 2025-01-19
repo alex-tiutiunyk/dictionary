@@ -5,4 +5,5 @@ export interface IWord {
   wordTranslation: string;
   example: string;
   exampleTranslation: string;
+  comment: string;
 }

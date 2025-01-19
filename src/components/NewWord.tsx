@@ -14,6 +14,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
   const [wordTranslation, setWordTranslation] = React.useState<string>('');
   const [example, setExample] = React.useState<string>('');
   const [exampleTranslation, setExampleTranslation] = React.useState<string>('');
+  const [comment, setComment] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
 
   // get user info from redux
@@ -37,6 +38,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
 
     if (nameTextarea === 'example') return setExample(valueTextrea);
     if (nameTextarea === 'example-translation') return setExampleTranslation(valueTextrea);
+    if (nameTextarea === 'comment') return setComment(valueTextrea);
   };
 
   // Add new word
@@ -53,6 +55,7 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
         wordTranslation,
         example,
         exampleTranslation,
+        comment,
       });
       console.log('ok');
 
@@ -117,6 +120,19 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
           cols={30}
           rows={2}
           value={exampleTranslation}
+          onChange={handleForm}
+          className='border border-slate-600 p-1 rounded-md'
+        ></textarea>
+      </div>
+      <div className='gap-1 flex flex-col'>
+        <label htmlFor='comment' className='text-sm'>
+          Comment
+        </label>
+        <textarea
+          id='comment'
+          cols={30}
+          rows={2}
+          value={comment}
           onChange={handleForm}
           className='border border-slate-600 p-1 rounded-md'
         ></textarea>
