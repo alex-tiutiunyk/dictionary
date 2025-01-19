@@ -631,6 +631,14 @@ video {
   flex-grow: 1;
 }
 
+.cursor-none {
+  cursor: none;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -911,6 +919,10 @@ video {
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+
+.opacity-40 {
+  opacity: 0.4;
 }
 
 .shadow {
