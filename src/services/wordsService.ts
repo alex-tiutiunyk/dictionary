@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { collection, deleteDoc, doc, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { IWord } from '../types';
 
