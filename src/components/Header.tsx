@@ -24,7 +24,7 @@ const Header: React.FC = () => {
         </button>
 
         <ul className='flex justify-center gap-x-3 text-lg'>
-          <NavLink to='/dictionary/' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
+          <NavLink to='/dictionary' style={({ isActive }) => (isActive ? { color: 'red' } : {})}>
             Home
           </NavLink>
           <li>

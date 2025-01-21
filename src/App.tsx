@@ -35,9 +35,9 @@ function App() {
         )}
         <Route element={<Layout />}>
           <Route element={<ProtectedRoutes />}>
-            <Route index element={<HomePage />} />
-            <Route path='/dictionary/signin' element={<Navigate to={'/dictionary/'} />} />
-            <Route path='/dictionary/signup' element={<Navigate to={'/dictionary/'} />} />
+            <Route path='/dictionary' element={<HomePage />} />
+            <Route path='/dictionary/signin' element={<Navigate to={'/dictionary'} />} />
+            <Route path='/dictionary/signup' element={<Navigate to={'/dictionary'} />} />
             <Route path='/dictionary/words' element={<WordsListPage />} />
             <Route path='/dictionary/words/:id' element={<SingleWordPage />} />
             <Route path='/dictionary/user' element={<User />} />
