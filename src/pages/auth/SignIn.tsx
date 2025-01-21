@@ -23,7 +23,7 @@ const SignIn: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      navigate('/');
+      navigate('/dictionary/');
       console.log('User Sign In');
       setErrorMessage('');
     } catch (error) {
@@ -83,7 +83,10 @@ const SignIn: React.FC = () => {
             </button>
             <p className='text-sm font-light text-gray-500'>
               Don’t have an account yet?{' '}
-              <Link to='/signup' className='font-medium text-primary-600 hover:underline'>
+              <Link
+                to='/dictionary/signup'
+                className='font-medium text-primary-600 hover:underline'
+              >
                 Sign up
               </Link>
             </p>

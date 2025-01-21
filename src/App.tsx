@@ -6,7 +6,7 @@ import WordsListPage from './pages/WordsList';
 import SingleWordPage from './pages/SingleWord';
 import NotFoundPage from './pages/NotFound';
 import SignUp from './pages/auth/SignUp';
-import UserDetails from './pages/UserDetails';
+import User from './pages/User';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import useAuth from './hooks/useAuth';
 import { setUser } from './redux/userSlice';
@@ -28,19 +28,19 @@ function App() {
       <Routes>
         {!user && (
           <>
-            <Route path='signin' element={<SignIn />} />
-            <Route path='signup' element={<SignUp />} />
-            <Route path='*' element={<Navigate to={'/signin'} />} />
+            <Route path='/dictionary/signin' element={<SignIn />} />
+            <Route path='/dictionary/signup' element={<SignUp />} />
+            <Route path='*' element={<Navigate to={'/dictionary/signin'} />} />
           </>
         )}
         <Route element={<Layout />}>
           <Route element={<ProtectedRoutes />}>
             <Route index element={<HomePage />} />
-            <Route path='signin' element={<Navigate to={'/'} />} />
-            <Route path='signup' element={<Navigate to={'/'} />} />
-            <Route path='words' element={<WordsListPage />} />
-            <Route path='words/:id' element={<SingleWordPage />} />
-            <Route path='user' element={<UserDetails />} />
+            <Route path='/dictionary/signin' element={<Navigate to={'/dictionary/'} />} />
+            <Route path='/dictionary/signup' element={<Navigate to={'/dictionary/'} />} />
+            <Route path='/dictionary/words' element={<WordsListPage />} />
+            <Route path='/dictionary/words/:id' element={<SingleWordPage />} />
+            <Route path='/dictionary/user' element={<User />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Route>

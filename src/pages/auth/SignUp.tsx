@@ -31,7 +31,7 @@ const SignUp: React.FC = () => {
       await updateProfile(user, { displayName });
 
       console.log('User registered successfully');
-      navigate('/');
+      navigate('/dictionary/');
       setDisplayName('');
       setEmail('');
       setPassword('');
@@ -114,7 +114,10 @@ const SignUp: React.FC = () => {
             </button>
             <p className='text-sm font-light text-gray-500'>
               Already have an account?{' '}
-              <Link to='/signin' className='font-medium text-primary-600 hover:underline'>
+              <Link
+                to='/dictionary/signin'
+                className='font-medium text-primary-600 hover:underline'
+              >
                 Sign in here
               </Link>
             </p>

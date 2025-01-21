@@ -9,7 +9,6 @@ export const getWordsFunc = async (
   subCollectionName: string,
 ): Promise<IWord[] | undefined> => {
   try {
-    if (!user) return;
     const userId = user?.email as string;
     const usersRef = collection(doc(db, collectionName, userId), subCollectionName);
     const q = query(usersRef, orderBy('date', 'desc'));

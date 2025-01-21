@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserDetails: React.FC = () => {
+const User: React.FC = () => {
   return (
     <div>
       <h1>User Details</h1>
@@ -8,4 +8,4 @@ const UserDetails: React.FC = () => {
   );
 };
 
-export default UserDetails;
+export default User;
