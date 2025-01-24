@@ -78,4 +78,4 @@ const WordItem = ({ word }: WordItemProps) => {
   );
 };
 
-export default WordItem;
+export default React.memo(WordItem);
