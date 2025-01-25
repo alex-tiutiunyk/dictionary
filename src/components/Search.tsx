@@ -1,13 +1,11 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { IWord } from '../types';
 import { getAllWords } from '../redux/wordSlice';
 import { getWordsFunc } from '../services/wordsService';
 import { User } from 'firebase/auth';
 
 const Search: React.FC = () => {
   const [inputText, setInputText] = React.useState<string>('');
-  const words: IWord[] | undefined = useAppSelector((state) => state.words.value);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.value) as User;
@@ -21,11 +19,13 @@ const Search: React.FC = () => {
   React.useEffect(() => {
     getWordsFunc(user, 'users', 'words').then((data) => {
       const searchResult = data?.filter(
-        (item) => item.word.includes(inputText) || item.wordTranslation.includes(inputText),
+        (item) =>
+          item.word.toLowerCase().includes(inputText.trim().toLowerCase()) ||
+          item.wordTranslation.toLowerCase().includes(inputText.trim().toLowerCase()),
       );
       dispatch(getAllWords(searchResult));
     });
-  }, [inputText]);
+  }, [inputText, dispatch, user]);
 
   return (
     <div>

@@ -18,8 +18,9 @@ const WordsListPage: React.FC = () => {
 
   return (
     <div>
-      <div className='flex mb-2'>
+      <div className='flex mb-5 justify-between'>
         <Search />
+        <div></div>
       </div>
       {words ? (
         <ul className='flex flex-col gap-2'>
