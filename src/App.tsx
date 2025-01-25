@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import SignIn from './pages/auth/SignIn';
 import HomePage from './pages/Home';
-import WordsListPage from './pages/WordsList';
+import WordsList from './pages/WordsList';
 import SingleWordPage from './pages/SingleWord';
 import NotFoundPage from './pages/NotFound';
 import SignUp from './pages/auth/SignUp';
@@ -11,6 +11,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import useAuth from './hooks/useAuth';
 import { setUser } from './redux/userSlice';
 import { useAppDispatch } from './redux/hooks';
+import Categories from './pages/Categories';
 
 function App() {
   // get user info
@@ -38,7 +39,8 @@ function App() {
             <Route path='/dictionary' element={<HomePage />} />
             <Route path='/dictionary/signin' element={<Navigate to={'/dictionary'} />} />
             <Route path='/dictionary/signup' element={<Navigate to={'/dictionary'} />} />
-            <Route path='/dictionary/words' element={<WordsListPage />} />
+            <Route path='/dictionary/words' element={<WordsList />} />
+            <Route path='/dictionary/categories' element={<Categories />} />
             <Route path='/dictionary/words/:id' element={<SingleWordPage />} />
             <Route path='/dictionary/user' element={<User />} />
           </Route>

@@ -35,6 +35,14 @@ const Header: React.FC = () => {
               Words
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to='/dictionary/categories'
+              style={({ isActive }) => (isActive ? { color: 'red' } : {})}
+            >
+              Categories
+            </NavLink>
+          </li>
         </ul>
 
         <UserDetails />
