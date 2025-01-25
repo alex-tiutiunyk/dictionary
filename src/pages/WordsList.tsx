@@ -5,6 +5,7 @@ import { getWordsFunc } from '../services/wordsService';
 import { getAllWords } from '../redux/wordSlice';
 import WordItem from '../components/WordItem';
 import Search from '../components/Search';
+import Category from '../components/Category';
 
 const WordsListPage: React.FC = () => {
   // get user info from redux
@@ -20,7 +21,9 @@ const WordsListPage: React.FC = () => {
     <div>
       <div className='flex mb-5 justify-between'>
         <Search />
-        <div></div>
+        <div>
+          <Category />
+        </div>
       </div>
       {words ? (
         <ul className='flex flex-col gap-2'>
