@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import { SquareMinus, SquarePlus } from 'lucide-react';
 import React from 'react';
-import { Modal } from '../ui-kit/Modal';
 import NewWord from './NewWord';
 import UserDetails from './UserDetails';
+import { Modal } from '../ui-kit';
 
 const Header: React.FC = () => {
   const [isModal, setIsModal] = React.useState<boolean>(false);

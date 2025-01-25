@@ -7,3 +7,10 @@ export interface IWord {
   exampleTranslation: string;
   comment: string;
 }
+
+export interface ICategories {
+  id: string;
+  date: string;
+  name: string;
+  words: string[];
+}

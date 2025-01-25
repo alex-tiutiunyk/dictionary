@@ -1,6 +1,6 @@
 import { SquarePlus } from 'lucide-react';
 import React from 'react';
-import { IWord } from '../types';
+import { ICategories, IWord } from '../types';
 import { useAppSelector } from '../redux/hooks';
 import { getWordsFunc } from '../services/wordsService';
 import { Loader } from '../ui-kit';
@@ -9,7 +9,7 @@ import { db } from '../firebase';
 
 const Categories: React.FC = () => {
   const [textInput, setTextInput] = React.useState<string>('');
-  const [errorText, setErrorText] = React.useState<string>('');
+  const [error, setError] = React.useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [words, setWords] = React.useState<IWord[] | undefined>([]);
@@ -56,8 +56,8 @@ const Categories: React.FC = () => {
 
   // Add New Category
   const addCategory = async (): Promise<void> => {
-    if (!textInput) return setErrorText('Fill Category Name.');
-    setErrorText('');
+    if (!textInput) return setError(true);
+    setError(false);
 
     try {
       const wordsId: string[] | undefined = categoryWords?.map((item) => item.id);
@@ -77,6 +77,17 @@ const Categories: React.FC = () => {
     }
   };
 
+  // Gategories
+  // const dispatch = useAppDispatch();
+  const [categories, setCategories] = React.useState<ICategories[]>([]);
+
+  // const categories = useAppSelector((state) => state.words.value);
+  React.useEffect(() => {
+    getWordsFunc(user, 'users', 'categories').then((data) => {
+      setCategories(data);
+    });
+  }, []);
+
   return (
     <div>
       <div className='flex mb-5 justify-between'>
@@ -90,12 +101,15 @@ const Categories: React.FC = () => {
       </div>
       {isOpen && (
         <>
-          <div className='text-center text-red-500'>{errorText}</div>
-          <div className='border'>
+          <div className='border mb-5'>
             <div className='flex justify-between align-middle p-3 border-b-2'>
               <input
                 type='text'
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5'
+                className={`bg-gray-50 border text-gray-900 text-sm rounded-lg block p-2.5 ${
+                  error
+                    ? 'border-red-500 focus:ring-red-400'
+                    : 'border-gray-300 focus:border-blue-500'
+                }`}
                 placeholder='Category Name'
                 value={textInput}
                 onChange={handleChange}
@@ -146,6 +160,13 @@ const Categories: React.FC = () => {
           </div>
         </>
       )}
+
+      <h1 className='text-center text-2xl mb-5'>Categories</h1>
+      {categories.map((item) => (
+        <div className='px-2 py-1 bg-gray-100 mb-2'>
+          {item.name} ({item.words.length})
+        </div>
+      ))}
     </div>
   );
 };
