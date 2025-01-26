@@ -1,11 +1,12 @@
 import { SquarePlus } from 'lucide-react';
 import React from 'react';
 import { ICategories, IWord } from '../types';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getWordsFunc } from '../services/wordsService';
 import { Loader } from '../ui-kit';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { getAllCategories } from '../redux/categoriesSlice';
 
 const Categories: React.FC = () => {
   const [textInput, setTextInput] = React.useState<string>('');
@@ -17,8 +18,9 @@ const Categories: React.FC = () => {
 
   // get user info from redux
   const user = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
 
-  // Get words
+  // Get Words
   React.useEffect(() => {
     setLoading(true);
     getWordsFunc(user, 'users', 'words').then((data) => {
@@ -78,13 +80,10 @@ const Categories: React.FC = () => {
   };
 
   // Gategories
-  // const dispatch = useAppDispatch();
-  const [categories, setCategories] = React.useState<ICategories[]>([]);
-
-  // const categories = useAppSelector((state) => state.words.value);
+  const categories = useAppSelector((state) => state.categories.value);
   React.useEffect(() => {
     getWordsFunc(user, 'users', 'categories').then((data) => {
-      setCategories(data);
+      dispatch(getAllCategories(data));
     });
   }, []);
 
