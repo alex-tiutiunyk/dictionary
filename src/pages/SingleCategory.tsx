@@ -1,15 +1,17 @@
 import React from 'react';
 import { useAppSelector } from '../redux/hooks';
 import { User } from 'firebase/auth';
-import { ICategories } from '../types';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { ICategories, IWord } from '../types';
+import { collection, doc, documentId, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useParams } from 'react-router-dom';
 
 const SingleCategory: React.FC = () => {
   const user = useAppSelector((state) => state.user.value) as User;
   const { id } = useParams();
-  const [category, setCategory] = React.useState<ICategories | null>(null);
+  const [words, setWords] = React.useState<IWord[] | []>([]);
+
+  const [singleCategory, setSingleCategory] = React.useState<ICategories | null>(null);
 
   const getOneCategory = async (): Promise<ICategories | null> => {
     try {
@@ -30,40 +32,40 @@ const SingleCategory: React.FC = () => {
     }
   };
 
-  const getFewWords = async () => {
+  const getFewWords = async (category: ICategories | null) => {
     try {
-      const collectionRef = collection(doc(db, 'users', 'alex.tiutiunyk@gmail.com'), 'words');
-      const q = query(
-        collectionRef,
-        where('date', 'in', ['2025-01-18T12:45:01.759Z', '2025-01-19T13:34:44.527Z']),
-      );
-      const data = await getDocs(q);
-      console.log(data.docs.map((item) => item.data()));
-      // const q = query(usersRef, where('state', '==', 'CA'));
-      // const userId = user?.email as string;
-      // const usersRef1 = doc(doc(db, 'users', userId), 'words', words[0]);
-      // const usersRef2 = doc(doc(db, 'users', userId), 'words', words[1]);
-      // const categoryDoc = await getAll(
-      //   doc(doc(db, collectionName, userId), 'categories', categoryId),
-      // );
-      // console.log(categoryDoc);
-      // const q = query(usersRef, orderBy('date', 'desc'));
-      // const querySnapshot = await getDocs(q);
-      // return querySnapshot.docs.map((item) => ({ id: item.id, ...item.data() } as IWord));
+      if (!category) return;
+      const userId = user.email;
+      const wordsId: string[] | undefined = category.words;
+      const collectionRef = collection(doc(db, 'users', userId), 'words');
+      const q = query(collectionRef, where(documentId(), 'in', wordsId));
+      const res = await getDocs(q);
+      const data = res.docs.map((item) => ({ id: item.id, ...item.data() } as IWord));
+      setWords(data);
+      console.log(data);
     } catch (error) {
       console.log('Error getting user works: ', error);
     }
   };
 
   React.useEffect(() => {
-    getOneCategory().then((category) => setCategory(category));
-    getFewWords();
+    getOneCategory().then((category) => {
+      setSingleCategory(category);
+      getFewWords(category);
+    });
   }, []);
 
   return (
     <div>
-      <h1 className='text-center text-2xl mb-5'>{category && category.name}</h1>
-      <ul>{category && category.words.map((word) => <li key={word}>- {word}</li>)}</ul>
+      <h1 className='text-center text-2xl mb-5'>{singleCategory && singleCategory.name}</h1>
+      <ul>
+        {words &&
+          words.map((word) => (
+            <li key={word.id}>
+              - {word.word} - {word.wordTranslation}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };

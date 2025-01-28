@@ -1,14 +1,13 @@
 import { SquarePlus } from 'lucide-react';
 import React from 'react';
-import { IWord } from '../types';
+import { ICategories, IWord } from '../types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { getWordsFunc } from '../services/wordsService';
+import { deleteWordFunc, getWordsFunc } from '../services/wordsService';
 import { Loader } from '../ui-kit';
-import { addDoc, collection, doc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getAllCategories } from '../redux/categoriesSlice';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Categories: React.FC = () => {
   const [textInput, setTextInput] = React.useState<string>('');
@@ -71,11 +70,12 @@ const Categories: React.FC = () => {
       const docRef = doc(db, 'users', userId);
       await addDoc(collection(docRef, 'categories'), {
         date: new Date().toISOString(),
-        categoryId: uuidv4(),
         name: textInput.trim(),
         words: wordsId,
       });
-      setIsOpen(false);
+      // setIsOpen(false);
+      const updatedCategories = await getWordsFunc(user, 'users', 'categories');
+      dispatch(getAllCategories(updatedCategories));
       console.log('New Category Created');
     } catch (error) {
       console.log(error);
@@ -89,6 +89,26 @@ const Categories: React.FC = () => {
       dispatch(getAllCategories(data));
     });
   }, []);
+
+  // deleteCategory
+  const deleteCategory = async (e, id): Promise<void> => {
+    e.stopPropagation();
+    try {
+      const userId = user?.email;
+      const collectionPath = doc(doc(db, 'users', userId), 'categories', id);
+      await deleteDoc(collectionPath);
+      const updatedCategories = await getWordsFunc(user, 'users', 'categories');
+      dispatch(getAllCategories(updatedCategories));
+      return console.log('deleted category');
+    } catch (error) {
+      console.log('Error delete word: ', error);
+    }
+  };
+
+  const navigate = useNavigate();
+  const handleCategory = (id: string) => {
+    navigate(`/dictionary/categories/${id}`);
+  };
 
   return (
     <div>
@@ -165,9 +185,21 @@ const Categories: React.FC = () => {
 
       <h1 className='text-center text-2xl mb-5'>Categories</h1>
       {categories.map((item) => (
-        <Link to={`/dictionary/categories/${item.id}`} className='block px-2 py-1 bg-gray-100 mb-2'>
-          {item.name} ({item.words.length})
-        </Link>
+        <div
+          key={item.id}
+          onClick={() => handleCategory(item.id)}
+          className='px-2 py-1 bg-gray-100 mb-2 flex justify-between cursor-pointer'
+        >
+          <div>
+            {item.name} ({item.words.length})
+          </div>
+          <button
+            className='border px-1 bg-red-500 hover:bg-red-600 text-white'
+            onClick={(e) => deleteCategory(e, item.id)}
+          >
+            delete
+          </button>
+        </div>
       ))}
     </div>
   );

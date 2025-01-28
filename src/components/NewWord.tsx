@@ -4,7 +4,6 @@ import { addDoc, collection, doc } from 'firebase/firestore';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getWordsFunc } from '../services/wordsService';
 import { getAllWords } from '../redux/wordSlice';
-import { v4 as uuidv4 } from 'uuid';
 
 interface NewWordProps {
   closeModal: () => void;
@@ -52,7 +51,6 @@ const NewWord: React.FC<NewWordProps> = ({ closeModal }) => {
       const docRef = doc(db, 'users', userId);
       await addDoc(collection(docRef, 'words'), {
         date: new Date().toISOString(),
-        wordId: uuidv4(),
         word,
         wordTranslation,
         example,
