@@ -19,6 +19,22 @@ export const getWordsFunc = async (
   }
 };
 
+export const getOneWordFunc = async (
+  user: User | null,
+  collectionName: string,
+  subCollectionName: string,
+): Promise<IWord[] | undefined> => {
+  try {
+    const userId = user?.email as string;
+    const usersRef = collection(doc(db, collectionName, userId), subCollectionName);
+    const q = query(usersRef, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((item) => ({ id: item.id, ...item.data() } as IWord));
+  } catch (error) {
+    console.log('Error getting user works: ', error);
+  }
+};
+
 export const deleteWordFunc = async (
   wordId: string,
   userId: string,

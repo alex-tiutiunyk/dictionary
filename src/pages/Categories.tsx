@@ -1,12 +1,14 @@
 import { SquarePlus } from 'lucide-react';
 import React from 'react';
-import { ICategories, IWord } from '../types';
+import { IWord } from '../types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getWordsFunc } from '../services/wordsService';
 import { Loader } from '../ui-kit';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getAllCategories } from '../redux/categoriesSlice';
+import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const Categories: React.FC = () => {
   const [textInput, setTextInput] = React.useState<string>('');
@@ -69,6 +71,7 @@ const Categories: React.FC = () => {
       const docRef = doc(db, 'users', userId);
       await addDoc(collection(docRef, 'categories'), {
         date: new Date().toISOString(),
+        categoryId: uuidv4(),
         name: textInput.trim(),
         words: wordsId,
       });
@@ -162,9 +165,9 @@ const Categories: React.FC = () => {
 
       <h1 className='text-center text-2xl mb-5'>Categories</h1>
       {categories.map((item) => (
-        <div className='px-2 py-1 bg-gray-100 mb-2'>
+        <Link to={`/dictionary/categories/${item.id}`} className='block px-2 py-1 bg-gray-100 mb-2'>
           {item.name} ({item.words.length})
-        </div>
+        </Link>
       ))}
     </div>
   );

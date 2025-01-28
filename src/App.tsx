@@ -1,17 +1,20 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
-import SignIn from './pages/auth/SignIn';
-import HomePage from './pages/Home';
-import WordsList from './pages/WordsList';
-import SingleWordPage from './pages/SingleWord';
-import NotFoundPage from './pages/NotFound';
-import SignUp from './pages/auth/SignUp';
-import User from './pages/User';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import useAuth from './hooks/useAuth';
 import { setUser } from './redux/userSlice';
 import { useAppDispatch } from './redux/hooks';
-import Categories from './pages/Categories';
+import {
+  Categories,
+  HomePage,
+  SignIn,
+  SignUp,
+  SingleCategory,
+  SingleWord,
+  User,
+  WordsList,
+} from './pages';
+import NotFoundPage from './pages/NotFound';
 
 function App() {
   // get user info
@@ -40,8 +43,9 @@ function App() {
             <Route path='/dictionary/signin' element={<Navigate to={'/dictionary'} />} />
             <Route path='/dictionary/signup' element={<Navigate to={'/dictionary'} />} />
             <Route path='/dictionary/words' element={<WordsList />} />
+            <Route path='/dictionary/words/:id' element={<SingleWord />} />
             <Route path='/dictionary/categories' element={<Categories />} />
-            <Route path='/dictionary/words/:id' element={<SingleWordPage />} />
+            <Route path='/dictionary/categories/:id' element={<SingleCategory />} />
             <Route path='/dictionary/user' element={<User />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
